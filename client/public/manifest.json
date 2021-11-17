@@ -1,0 +1,66 @@
+{
+  "manifest_version": 2,
+  "name": "notebook",
+  "description": "__MSG_pluginDesc__",
+  "version": "0.0.1",
+  "icons": {
+    "16": "img/icon.png",
+    "48": "img/icon.png",
+    "128": "img/icon.png"
+  },
+  "background": {
+    "scripts": [
+      "js/background.js",
+      "js/hot-reload.js"
+    ]
+  },
+  "browser_action": {
+    "default_title": "This is a Chrome notebook!",
+    "default_popup": "popup.html",
+    "default_icon": "img/icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "css": [
+        "css/content.css"
+      ],
+      "js": [
+        "js/content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "notifications",
+    "webRequest",
+    "webRequestBlocking",
+    "storage",
+    "http://*/*",
+    "https://*/*",
+    "declarativeContent"
+  ],
+  "web_accessible_resources": [
+    "js/inject.js",
+    "fonts/*"
+  ],
+  "homepage_url": "https://www.baidu.com",
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "options_page": "options.html",
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+  "omnibox": {
+    "keyword": "go"
+  },
+  "default_locale": "zh_CN",
+  "devtools_page": "devtools.html",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
