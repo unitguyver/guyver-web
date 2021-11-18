@@ -1,0 +1,28 @@
+@import '@/utils/antd/themes/default.less';
+
+.app-window{
+  background-color: @blue-6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  color: #ffffff;
+  position: absolute;
+  overflow: hidden;
+
+  .app-header{  
+    width: 100%;
+    flex-shrink: 0;
+    height: 32px;
+    background-color: @blue-10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .app-content{
+    width: 100%;
+    flex-grow: 1;
+    background-color: @blue-6;
+  }
+}

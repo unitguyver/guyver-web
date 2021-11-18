@@ -1,37 +1,33 @@
 import { createStore } from 'redux';
 import { combineReducers } from 'redux';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux';
 
 const modulesFiles = require.context('./modules', true, /\.js$/)
 
-const { reducers, actions } = modulesFiles.keys().reduce(({ reducers, actions }, modulePath) => {
-  const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1')
+const reducers = modulesFiles.keys().reduce((reducers, modulePath) => {
+  const moduleName = /^\.\/(.*?)\.js/.exec(modulePath)[1];
+
   const value = modulesFiles(modulePath)
   const data = value.default;
-  return {
-    reducers: Object.assign(reducers, data.state),
-    actions: Object.assign(actions, data.actions || {})
-  }
-}, { reducers: {}, actions: {} })
 
-console.log(reducers)
+  reducers[moduleName] = function (state, action) {
+    if (/^@@redux/.test(action.type)) {
+      return data.state;
+    } else {
+      const actionModuleName = /^(.*?)\/\w+$/.exec(action.type)[1];
+      const actionReducer = /^\w+\/(.*?)$/.exec(action.type)[1];
+      if (actionModuleName === moduleName) {
+        if (data.reducers.hasOwnProperty(actionReducer)) {
+          data.reducers[actionReducer](state, action.payload);
+        }
+      }
+    }
+    console.log(moduleName, state)
+    return state;
+  };
 
-const store = createStore(combineReducers(reducers))
+  return reducers;
+}, {})
 
-console.log(store)
+const store = createStore(combineReducers(reducers));
 
-const _connect = connect(
-  (state) => {
-    console.log(state);
-    return state
-  },
-  (dispatch) => {
-    return {}
-  }
-);
-
-export {
-  store as store,
-  _connect as connect
-}
+export default store;

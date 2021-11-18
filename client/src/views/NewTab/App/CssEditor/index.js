@@ -1,13 +1,13 @@
 import React from "react";
-import Application from "@/components/Application";
+import { Application, ApplicationConnect } from "@/components/Application";
 import { MinusOutlined, SwitcherOutlined, BorderOutlined, CloseOutlined } from '@ant-design/icons';
-import { connect } from "@/store";
 import "./index.less";
 
-@connect
+@ApplicationConnect
 export default class CssEditor extends Application {
   constructor(props) {
     super(props);
+    this.APP_NAME = "CssEditor";
   }
   render() {
     return (
@@ -16,17 +16,17 @@ export default class CssEditor extends Application {
           <div className="logo">LOGO</div>
           <div className="control">
             <div className="control-item">
-              <MinusOutlined onClick={this.minimize} />
+              <MinusOutlined onClick={this.switch.bind(this, "min")} />
             </div>
             <div className="control-item">
               {
-                this.STATUS === "MIN"
-                  ? <BorderOutlined onClick={this.maximize} />
-                  : <SwitcherOutlined onClick={this.narrow} />
+                this.APP_STATUS === "MIN"
+                  ? <BorderOutlined onClick={this.switch.bind(this, "max")} />
+                  : <SwitcherOutlined onClick={this.switch.bind(this, "small")} />
               }
             </div>
             <div className="control-item">
-              <CloseOutlined onClick={this.close} />
+              <CloseOutlined onClick={this.switch.bind(this, "closed")} />
             </div>
           </div>
         </div>

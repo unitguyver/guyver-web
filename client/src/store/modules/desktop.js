@@ -2,14 +2,15 @@ export default {
   namespace: 'desktop',
 
   state: {
-    list() {
-      return []
-    }
+    list: []
   },
 
-  actions: {
-    count() {
-      console.log(...arguments);
+  reducers: {
+    init(state, payload) {
+      state.list = payload;
+    },
+    push(state, payload) {
+      state.list.push(payload)
     }
   }
 }
