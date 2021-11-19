@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 import "./index.less";
 
 const iconStyle = {
-  fontSize: "72px"
+  fontSize: "36px"
 }
 
 @connect((state) => {
   return {
-    desktop: state.desktop
+    apps: state.apps
   }
 }, {
   active: (payload) => {
     return {
-      type: "taskbar/active",
+      type: "apps/switch",
       payload
     }
   }
@@ -26,9 +26,9 @@ export default class DeskTop extends Component {
     return (
       <React.Fragment>
         {
-          this.props.desktop.list.map(item => {
+          this.props.apps.list.map(item => {
             return (
-              <div className="app-item" onClick={
+              <div className="app-item" style={{ order: item.order }} onClick={
                 this.props.active.bind(this, {
                   name: item.name,
                   status: "opened"

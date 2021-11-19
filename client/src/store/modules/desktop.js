@@ -6,11 +6,6 @@ export default {
   },
 
   reducers: {
-    init(state, payload) {
-      state.list = payload;
-    },
-    push(state, payload) {
-      state.list.push(payload)
-    }
+
   }
 }

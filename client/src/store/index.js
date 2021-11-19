@@ -21,8 +21,9 @@ const reducers = modulesFiles.keys().reduce((reducers, modulePath) => {
         }
       }
     }
-    console.log(moduleName, state)
-    return state;
+    return {
+      ...state
+    };
   };
 
   return reducers;

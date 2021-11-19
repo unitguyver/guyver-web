@@ -7,9 +7,9 @@ import JsEditor from './JsEditor';
 import NoteBook from './NoteBook';
 
 @connect(undefined, {
-  initDeskTop(payload) {
+  initApps(payload) {
     return {
-      type: "desktop/init",
+      type: "apps/init",
       payload
     }
   }
@@ -17,20 +17,26 @@ import NoteBook from './NoteBook';
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.props.initDeskTop([
+    this.props.initApps([
       {
+        order: 1,
         name: "CssEditor",
         text: "css注入",
+        status: "CLOSED",
         icon: FormOutlined
       },
       {
+        order: 2,
         name: "JsEditor",
         text: "js注入",
+        status: "CLOSED",
         icon: CodeOutlined
       },
       {
-        name: "CssEditor",
+        order: 3,
+        name: "NoteBook",
         text: "笔记本",
+        status: "CLOSED",
         icon: SnippetsOutlined
       }
     ])
