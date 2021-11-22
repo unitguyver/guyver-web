@@ -2,48 +2,18 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import "./index.less";
 
-const APP_STATUS_STYLE = {
-  "OPENED": {
-    display: "flex",
-    width: "100%",
-    height: "100%",
-    left: "0",
-    top: "0",
-  },
-  "CLOSED": {
-    display: "none"
-  },
-  "SMALL": {
-    width: "500px",
-    height: "300px",
-    left: "100px",
-    top: "100px"
-  },
-  "MIN": {
-    width: 0,
-    height: 0
-  },
-  "MAX": {
-    width: "100%",
-    height: "100%",
-    left: "0",
-    top: "0"
-  }
-}
-
-
-const add_style = function (el, styles) {
-  Object.entries(styles).forEach(([key, value]) => {
-    el.style[key] = value;
-  })
-}
-
-const ApplicationConnect = connect((state) => {
+const ApplicationConnect = connect((state, props) => {
+  let zIndex = 0;
+  const app = state.apps.list.filter((app, index) => {
+    if (app.name === props.name) {
+      zIndex = 99 - index;
+      return true;
+    }
+    return app.name === props.name;
+  })[0];
   return {
-    status: state.apps.list.reduce((tempObj, app) => {
-      tempObj[app.name] = app.status;
-      return tempObj;
-    }, {})
+    status: app.status,
+    zIndex
   }
 }, {
   switch(payload) {
@@ -51,14 +21,23 @@ const ApplicationConnect = connect((state) => {
       type: "apps/switch",
       payload
     }
+  },
+  active(payload) {
+    return {
+      type: "apps/active",
+      payload
+    }
   }
-})
+});
 
 class Application extends Component {
 
   APP_NAME = undefined;
   moving = false;
   whenMove = undefined;
+  transformed = undefined;
+  size = [];
+  site = []
 
   constructor(props) {
     super(props);
@@ -70,7 +49,54 @@ class Application extends Component {
    * @description 组件数据更新
    */
   componentDidUpdate() {
-    add_style(this.APP_WINDOW, APP_STATUS_STYLE[this.props.status[this.APP_NAME]]);
+    this.transform(this.props.status);
+  }
+
+  /**
+   * @author guyver
+   * @date 2021/11/22 14:28
+   * @description 修改大小、位置
+   */
+  transform(status = this.props.status) {
+    let styles = {
+      zIndex: this.props.zIndex
+    };
+    switch (status) {
+      case "OPENED":
+        styles["display"] = "flex"
+        this.size = ["100%", "100%"];
+        this.site = ["0", "0"];
+        break;
+      case "CLOSED":
+        styles["display"] = "none";
+        break;
+      case "SMALL":
+        if (this.transformed !== status) {
+          if (!this.scaling) {
+            this.size = ["500px", "300px"];
+          }
+          if (!this.moving) {
+            this.site = ["100px", "100px"];
+          }
+        }
+        break;
+      case "MIN":
+        this.size = ["0", "0"];
+        break;
+      case "MAX":
+        this.size = ["100%", "100%"];
+        this.site = ["0", "0"];
+        break;
+    }
+    this.transformed = status;
+    Object.entries(Object.assign(styles, {
+      width: this.size[0],
+      height: this.size[1],
+      left: this.site[0],
+      top: this.site[1]
+    })).forEach(([key, value]) => {
+      this.APP_WINDOW.style[key] = value;
+    })
   }
 
   /**
@@ -80,7 +106,6 @@ class Application extends Component {
    */
   bindDrag = (el) => {
     el.addEventListener("mousedown", (event) => {
-      console.log(event)
       if (event.target === el) {
         this.moving = true;
         this.whenMove = {
@@ -91,43 +116,38 @@ class Application extends Component {
 
     });
 
-    el.addEventListener("mousemove", (event) => {
+    window.addEventListener("mousemove", (event) => {
       if (this.moving) {
         if (!this.whenMove.x) {
-          if (this.props.status[this.APP_NAME] === "SMALL") {
+          if (this.props.status === "SMALL") {
             this.whenMove = Object.assign(this.whenMove, {
               x: this.APP_WINDOW.offsetLeft,
               y: this.APP_WINDOW.offsetTop
             })
           } else {
-            this.switch("small");
             this.whenMove = Object.assign(this.whenMove, {
               x: event.x - Math.floor(event.offsetX * 500 / el.clientWidth),
               y: event.y - event.offsetY
             });
-            add_style(this.APP_WINDOW, {
-              left: this.whenMove.x + "px",
-              top: this.whenMove.y + "px"
-            });
+            this.site = [
+              this.whenMove.x + "px",
+              this.whenMove.y + "px"
+            ]
+            this.switch("small");
             return;
           }
         }
-        const left = this.whenMove.x + event.x - this.whenMove.mouseX;
-        const top = this.whenMove.y + event.y - this.whenMove.mouseY;
-        add_style(this.APP_WINDOW, {
-          left: left + "px",
-          top: top + "px"
-        });
+        this.site = [
+          this.whenMove.x + event.x - this.whenMove.mouseX + "px",
+          this.whenMove.y + event.y - this.whenMove.mouseY + "px"
+        ]
+        this.transform();
       }
     });
 
-    el.addEventListener("mouseup", (event) => {
+    window.addEventListener("mouseup", (event) => {
       this.moving = false;
     });
-
-    el.addEventListener("mouseleave", (event) => {
-      this.moving = false;
-    })
   }
 
   /**
@@ -137,6 +157,9 @@ class Application extends Component {
    */
   bindWindow = (el) => {
     this.APP_WINDOW = el;
+    el.addEventListener("mousedown", () => {
+      this.props.active(this.APP_NAME);
+    })
   }
 
   /**
@@ -146,7 +169,7 @@ class Application extends Component {
    */
   switch(status) {
     status = status.toUpperCase();
-    add_style(this.APP_WINDOW, APP_STATUS_STYLE[status]);
+    this.transform(status);
     this.props.switch({
       name: this.APP_NAME,
       status

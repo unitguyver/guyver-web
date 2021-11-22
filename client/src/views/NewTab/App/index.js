@@ -44,9 +44,9 @@ export default class App extends Component {
   render() {
     return (
       <Window>
-        <CssEditor></CssEditor>
-        <JsEditor></JsEditor>
-        <NoteBook></NoteBook>
+        <CssEditor name="CssEditor"></CssEditor>
+        <JsEditor name="JsEditor"></JsEditor>
+        <NoteBook name="NoteBook"></NoteBook>
       </Window>
     )
   }
