@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Quill from './quill';
 
 export default class QuillEditor extends Component {
   render() {
@@ -8,6 +9,6 @@ export default class QuillEditor extends Component {
   }
 
   componentDidMount() {
-    // const editor = new Quill('#editor');
+    const editor = new Quill('#editor');
   }
 }

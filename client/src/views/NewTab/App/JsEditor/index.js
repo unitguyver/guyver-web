@@ -11,7 +11,7 @@ export default class CssEditor extends Application {
     this.APP_NAME = this.props.name;
   }
   render() {
-    const status = this.props.status[this.APP_NAME];
+    const status = this.props.status;
     return (
       <div id="js-editor" ref={this.bindWindow}>
         <div class="header" ref={this.bindDrag}>
