@@ -1,5 +1,6 @@
 node {
   stage('test') {
-    sh 'pwd'
+    // sh 'pwd'
+    sh 'ls'
   }
 }
