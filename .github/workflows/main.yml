@@ -21,4 +21,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: wget "http://8.142.19.177:9091/job/guyver-web-pipeline/build?token=ysd123456"
+        run: wget "http://8.142.19.177:9091/job/pipeline/build?token=ysd123456"
