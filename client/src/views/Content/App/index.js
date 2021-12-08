@@ -1,48 +1,119 @@
 import React, { Component } from 'react';
+import { Button } from 'antd';
 import { PlusOutlined, CloseOutlined, FormOutlined, SnippetsOutlined, CodeOutlined } from '@ant-design/icons';
+import CssInject from './CssInject';
+import JsInject from './JsInject';
+import NoteBook from './NoteBook';
+import "./index.less";
 
 export default class App extends Component {
 
-  state = 'off';
+  state = {
+    showList: false,
+    active: ""
+  }
 
   constructor(props) {
     super(props);
   }
 
+  toggle = () => {
+    this.setState({
+      showList: !this.state.showList
+    })
+  }
+
+  toggleWindow = ({ currentTarget }) => {
+    const active = currentTarget.dataset.dialog;
+    if (this.state.active === active) {
+      this.setState({ active: "" });
+    } else {
+      this.setState({ active });
+    }
+  }
+
+  close = () => {
+    this.setState({
+      active: ""
+    })
+  }
+
   render() {
+    const showList = this.state.showList;
+    const active = this.state.active;
+
     const toolbar = (
       <div className="toolbar">
-        <div className="icon">
-          <FormOutlined />
-        </div>
-        <div className="icon">
-          <CodeOutlined />
-        </div>
-        <div className="icon">
-          <SnippetsOutlined />
-        </div>
+        <Button
+          className="fadeInUp-3"
+          data-dialog="css"
+          onClick={this.toggleWindow}
+          type="primary"
+          shape="circle"
+          size="large"
+          icon={<FormOutlined />}
+        ></Button>
+        <Button
+          className="fadeInUp-2"
+          data-dialog="js"
+          onClick={this.toggleWindow}
+          type="primary"
+          shape="circle"
+          size="large"
+          icon={<CodeOutlined />}
+        ></Button>
+        <Button
+          className="fadeInUp-1"
+          data-dialog="note"
+          onClick={this.toggleWindow}
+          type="primary"
+          shape="circle"
+          size="large"
+          icon={<SnippetsOutlined />}
+        ></Button>
       </div>
     )
 
     const appMain = (
-      <div className="app-main"></div>
+      <div className={"app-main" +
+        {
+          "css": " app-main-css",
+          "js": " app-main-js",
+          "note": " app-main-note"
+        }[active]
+      }>
+        {/* <div className="close" onClick={this.close}>
+          <Button
+            type="primary"
+            shape="circle"
+            size="small"
+            danger
+            icon={<CloseOutlined />}
+          ></Button>
+        </div> */}
+        {active === "css" ? <CssInject></CssInject> : ""}
+        {active === "js" ? <JsInject></JsInject> : ""}
+        {active === "note" ? <NoteBook></NoteBook> : ""}
+      </div>
     )
 
     return (
       <React.Fragment>
+        {showList && active ? appMain : ''}
         <div className="tool">
-          <div className="switch">
-            {
-              this.state === 'on'
+          {showList ? toolbar : ''}
+          <Button
+            type="primary"
+            shape="circle"
+            size="large"
+            icon={
+              showList
                 ? <CloseOutlined />
-                : this.state === 'off'
-                  ? <PlusOutlined />
-                  : ''
+                : <PlusOutlined />
             }
-          </div>
-          {this.state === 'on' ? toolbar : ''}
+            onClick={this.toggle}
+          />
         </div>
-        {this.state === 'on' ? appMain : ''}
       </React.Fragment>
     )
   }

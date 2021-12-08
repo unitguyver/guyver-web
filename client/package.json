@@ -3,30 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "webpack --watch --progress --config config/webpack.dev.conf.js",
-    "build": "webpack --config config/webpack.dev.conf.js"
+    "dev": "webpack-dev-server --config config/webpack.dev.conf.js",
+    "start": "npm run dev",
+    "test": "webpack --watch --progress --config config/webpack.test.conf.js",
+    "build": "webpack --config config/webpack.test.prod.js"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "animate.css": "^4.1.1",
     "antd": "^4.16.13",
     "axios": "^0.24.0",
-    "clone": "^2.1.2",
+    "csslint": "^1.0.5",
     "extend": "^3.0.2",
     "fast-diff": "^1.2.0",
+    "jshint": "^2.13.1",
     "less": "^4.1.2",
     "parchment": "^2.0.0-dev.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
-    "redux": "^4.1.2",
-    "webpack": "^5.64.0",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.4.0"
+    "redux": "^4.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
     "@babel/plugin-proposal-decorators": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.4",
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
     "babel-loader": "^8.2.3",
@@ -39,6 +41,9 @@
     "mini-css-extract-plugin": "^2.4.4",
     "redux-devtools": "^3.7.0",
     "style-loader": "^3.3.1",
-    "url-loader": "^4.1.1"
+    "url-loader": "^4.1.1",
+    "webpack": "^5.64.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.4.0"
   }
 }

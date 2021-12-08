@@ -20,7 +20,6 @@ const iconStyle = {
     }
   }
 })
-
 export default class TaskBar extends Component {
 
   switch(name) {
@@ -54,6 +53,7 @@ export default class TaskBar extends Component {
               if (item.status !== "CLOSED") {
                 return (
                   <div
+                    key={index}
                     className={index === 0 ? "task-item active-task" : "task-item"}
                     style={{ order: item.order }}
                     onClick={this.switch.bind(this, item.name)}

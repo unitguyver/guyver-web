@@ -26,9 +26,9 @@ export default class DeskTop extends Component {
     return (
       <React.Fragment>
         {
-          this.props.apps.list.map(item => {
+          this.props.apps.list.map((item, index) => {
             return (
-              <div className="app-item" style={{ order: item.order }} onClick={
+              <div key={index} className="app-item" style={{ order: item.order }} onClick={
                 this.props.active.bind(this, {
                   name: item.name,
                   status: "opened"

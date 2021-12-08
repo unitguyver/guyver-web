@@ -25,10 +25,12 @@
         "<all_urls>"
       ],
       "css": [
-        "css/content.css"
+        "css/content.css",
+        "css/ext.css"
       ],
       "js": [
-        "js/content.js"
+        "js/content.js",
+        "js/ext.js"
       ],
       "run_at": "document_end"
     }

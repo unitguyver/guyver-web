@@ -1,0 +1,116 @@
+@import '@/utils/antd/themes/default.less';
+
+@keyframes open-window {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.fadeInUp (@height, @duration, @delay){
+  @name: ~'fadeInUp-@{height}';
+  @transform: ~'translate3d(0, @{height}px, 0)';
+  @duration-s: (@duration/1000);
+  @delay-s: (@delay/1000);
+
+  @keyframes @name {
+    from{
+      opacity: 0;
+      transform: @transform;
+    }
+    to{
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  
+  opacity: 0;
+  animation-name: @name;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+  animation-duration: ~'@{duration-s}s';
+  animation-delay: ~'@{delay-s}s';
+}
+
+#weiboApp{
+  box-sizing: border-box;
+  padding: 96px 32px 96px 96px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .app-main{
+    flex-grow: 1;
+    height: 100%;
+    pointer-events: all;
+    border-radius: 4px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.3);
+    // overflow: hidden;
+    animation-name: open-window;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease;
+    animation-duration: 0.3s;
+    animation-delay: 0s;
+    position: relative;
+
+    .close{
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      z-index: 999;
+      top: -12px;
+      right: -12px;
+    }
+  } 
+
+  .app-main-css{
+    transform-origin: calc(100% + 36px) calc(100% - 188px);
+  }
+
+  .app-main-js{
+    transform-origin: calc(100% + 36px) calc(100% - 132px);
+  }
+
+  .app-main-note{
+    transform-origin: calc(100% + 36px) calc(100% - 76px);
+  }
+  
+  .tool{
+    width: 64px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: hidden;
+
+    .ant-btn{
+      pointer-events: all;
+    }
+  
+    .toolbar{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+
+      .ant-btn{
+        margin-bottom: 16px;
+      }
+
+      .fadeInUp-1{
+        .fadeInUp(56, 300, 0);
+      }
+
+      .fadeInUp-2{
+        .fadeInUp(112, 300, 100);
+      }
+
+      .fadeInUp-3{
+        .fadeInUp(168, 300, 200);
+      }
+    }
+  }
+}

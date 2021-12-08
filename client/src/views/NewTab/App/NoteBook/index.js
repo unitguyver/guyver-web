@@ -1,20 +1,23 @@
 import React from "react";
 import { Application, ApplicationConnect } from "@/components/Application";
 import { MinusOutlined, SwitcherOutlined, BorderOutlined, CloseOutlined } from '@ant-design/icons';
-import QuillEditor from "@/components/Editor/quill";
+import PureEditor from "@/components/PureEditor";
 import "./index.less";
+let editor;
 
 @ApplicationConnect
 export default class CssEditor extends Application {
+
   constructor(props) {
     super(props);
     this.APP_NAME = this.props.name;
   }
+
   render() {
     const status = this.props.status;
     return (
       <div id="note-book" ref={this.bindWindow}>
-        <div class="header" ref={this.bindDrag}>
+        <div className="header" ref={this.bindDrag}>
           <div className="logo">{this.APP_NAME}</div>
           <div className="control">
             <div className="control-item" onClick={this.switch.bind(this, "min")}>
@@ -34,10 +37,17 @@ export default class CssEditor extends Application {
             </div>
           </div>
         </div>
-        <div class="content">
-          <QuillEditor></QuillEditor>
+        <div className="content">
+          <div id="note-editor-container"></div>
         </div>
       </div>
     )
+  }
+
+  componentDidMount() {
+    editor = new PureEditor(document.getElementById("note-editor-container"), {
+      mode: "text",
+      theme: "blue"
+    })
   }
 }
