@@ -2,9 +2,11 @@ import dom from "../lib/utils/dom";
 import lang from "../lib/utils/lang";
 import event from "../lib/event/event";
 import HashHandler from "../lib/event/keyboard/HashHandler";
-import keyUtil from "../lib/utils/keys";
+import Keys from "../lib/utils/Keys";
 
 const searchboxCss = require("../requirejs/text!./searchbox.css");
+
+const keyUtil = new Keys();
 
 define(function (require, exports, module) {
     "use strict";

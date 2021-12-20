@@ -45,9 +45,9 @@ export default class CssEditor extends Application {
   }
 
   componentDidMount() {
-    editor = new PureEditor(document.getElementById("note-editor-container"), {
-      mode: "text",
-      theme: "blue"
-    })
+    // editor = new PureEditor(document.getElementById("note-editor-container"), {
+    //   mode: "text",
+    //   theme: "blue"
+    // })
   }
 }

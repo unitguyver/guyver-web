@@ -49,6 +49,9 @@ export default class CssEditor extends Application {
     editor = new PureEditor(document.getElementById("css-editor-container"), {
       mode: "css",
       theme: "night"
-    })
+    });
+    // editor.showSettingsMenu();
+
+    console.log(editor)
   }
 }

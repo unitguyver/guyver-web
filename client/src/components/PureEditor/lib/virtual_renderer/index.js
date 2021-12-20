@@ -77,9 +77,6 @@ class VirtualRenderer {
 
     dom.addCssClass(this.container, "ace_editor");
     dom.HI_DPI && dom.addCssClass(this.container, "ace_hidpi");
-    if (config.get("useStrictCSP") == null) {
-      config.set("useStrictCSP", false);
-    }
 
     this.$gutter = dom.createElement("div");
     this.$gutter.className = "ace_gutter";

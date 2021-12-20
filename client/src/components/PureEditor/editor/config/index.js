@@ -9,17 +9,18 @@ const global = (function () {
     return this || typeof window != "undefined" && window;
 })();
 
+function deHyphenate(str) {
+    return str.replace(/-(.)/g, function (m, m1) {
+        return m1.toUpperCase();
+    });
+}
+
 const options = {
     packaged: false,
-    workerPath: null,
-    modePath: null,
-    themePath: null,
-    basePath: "",
     suffix: ".js",
     $moduleUrls: {},
     loadWorkerFromBlob: true,
-    sharedPopups: false,
-    useStrictCSP: null
+    sharedPopups: false
 };
 
 appConfig.get = function (key) {
@@ -42,41 +43,6 @@ appConfig.all = function () {
 };
 
 appConfig.$modes = {};
-
-// module loading
-appConfig.moduleUrl = function (name, component) {
-    if (options.$moduleUrls[name])
-        return options.$moduleUrls[name];
-
-    var parts = name.split("/");
-    component = component || parts[parts.length - 2] || "";
-
-    // todo make this configurable or get rid of '-'
-    var sep = component == "snippets" ? "/" : "-";
-    var base = parts[parts.length - 1];
-    if (component == "worker" && sep == "-") {
-        var re = new RegExp("^" + component + "[\\-_]|[\\-_]" + component + "$", "g");
-        base = base.replace(re, "");
-    }
-
-    if ((!base || base == component) && parts.length > 1)
-        base = parts[parts.length - 2];
-    var path = options[component + "Path"];
-    if (path == null) {
-        path = options.basePath;
-    } else if (sep == "/") {
-        component = sep = "";
-    }
-    if (path && path.slice(-1) != "/")
-        path += "/";
-    return path + component + sep + base + this.get("suffix");
-};
-
-appConfig.setModuleUrl = function (name, subst) {
-    return options.$moduleUrls[name] = subst;
-};
-
-appConfig.$loading = {};
 
 /**
  * @author guyver
@@ -162,9 +128,5 @@ function init(packaged) {
 }
 
 appConfig.init = init;
-
-function deHyphenate(str) {
-    return str.replace(/-(.)/g, function (m, m1) { return m1.toUpperCase(); });
-}
 
 export default appConfig;

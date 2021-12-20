@@ -452,8 +452,9 @@ export default class Autocomplete {
             return editor.completer;
         }
         if (config.get("sharedPopups")) {
-            if (!Autocomplete.$shared)
+            if (!Autocomplete.$shared) {
                 Autocomplete.$sharedInstance = new Autocomplete();
+            }
             editor.completer = Autocomplete.$sharedInstance;
         } else {
             editor.completer = new Autocomplete();

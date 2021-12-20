@@ -1,11 +1,9 @@
 import dom from "../../utils/dom";
 import * as iSearchCommandModule from "../../commands/incremental_search_commands";
+import Keys from "../../utils/Keys";
+import HashHandler from "./HashHandler";
 
-const { HashHandler } = require("./HashHandler");
-const keys = require("../../utils/keys").KEY_MODS;
-
-require("../../../editor/tools/IncrementalSearch");
-
+const keys = Keys.KEY_MODS;
 const handler = new HashHandler();
 handler.isEmacs = true;
 handler.$id = "ace/keyboard/emacs";

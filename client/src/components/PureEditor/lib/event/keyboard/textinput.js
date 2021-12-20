@@ -3,17 +3,19 @@ import useragent from "../../utils/useragent";
 import dom from "../../utils/dom";
 import lang from "../../utils/lang";
 import clipboard from "../../../utils/clipboard";
-import KEYS from "../../utils/keys";
+import Keys from "../../utils/Keys";
 
-var BROKEN_SETDATA = useragent.isChrome < 18;
-var USE_IE_MIME_TYPE = useragent.isIE;
-var HAS_FOCUS_ARGS = useragent.isChrome > 63;
-var MAX_LINE_LENGTH = 400;
+const keyUtil = new Keys();
 
-var MODS = KEYS.KEY_MODS;
-var isIOS = useragent.isIOS;
-var valueResetRegex = isIOS ? /\s/ : /\n/;
-var isMobile = useragent.isMobile;
+const BROKEN_SETDATA = useragent.isChrome < 18;
+const USE_IE_MIME_TYPE = useragent.isIE;
+const HAS_FOCUS_ARGS = useragent.isChrome > 63;
+const MAX_LINE_LENGTH = 400;
+
+const MODS = Keys.KEY_MODS;
+const isIOS = useragent.isIOS;
+const valueResetRegex = isIOS ? /\s/ : /\n/;
+const isMobile = useragent.isMobile;
 
 const TextInput = function (parentNode, host) {
     var text = dom.createElement("textarea");
@@ -669,13 +671,13 @@ const TextInput = function (parentNode, host) {
             var modifier = 0;
             // console.log(selectionStart, selectionEnd);
             if (selectionStart == 0) {
-                key = KEYS.up;
+                key = keyUtil.up;
             } else if (selectionStart == 1) {
-                key = KEYS.home;
+                key = keyUtil.home;
             } else if (selectionEnd > lastSelectionEnd && lastValue[selectionEnd] == "\n") {
-                key = KEYS.end;
+                key = keyUtil.end;
             } else if (selectionStart < lastSelectionStart && lastValue[selectionStart - 1] == " ") {
-                key = KEYS.left;
+                key = keyUtil.left;
                 modifier = MODS.option;
             } else if (
                 selectionStart < lastSelectionStart
@@ -685,11 +687,11 @@ const TextInput = function (parentNode, host) {
                     && selectionStart == selectionEnd
                 )
             ) {
-                key = KEYS.left;
+                key = keyUtil.left;
             } else if (selectionEnd > lastSelectionEnd && lastValue.slice(0, selectionEnd).split("\n").length > 2) {
-                key = KEYS.down;
+                key = keyUtil.down;
             } else if (selectionEnd > lastSelectionEnd && lastValue[selectionEnd - 1] == " ") {
-                key = KEYS.right;
+                key = keyUtil.right;
                 modifier = MODS.option;
             } else if (
                 selectionEnd > lastSelectionEnd
@@ -699,7 +701,7 @@ const TextInput = function (parentNode, host) {
                     && selectionStart == selectionEnd
                 )
             ) {
-                key = KEYS.right;
+                key = keyUtil.right;
             }
 
             if (selectionStart !== selectionEnd)
@@ -708,7 +710,7 @@ const TextInput = function (parentNode, host) {
             if (key) {
                 var result = host.onCommandKey({}, modifier, key);
                 if (!result && host.commands) {
-                    key = KEYS.keyCodeToString(key);
+                    key = keyUtil.keyCodeToString(key);
                     var command = host.commands.findKeyCommand(modifier, key);
                     if (command)
                         host.execCommand(command);

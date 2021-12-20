@@ -5,20 +5,20 @@ var lastArabic = false, hasUBAT_AL = false, hasUBAT_B = false, hasUBAT_S = false
 
 var impTab_LTR = [
 				/*		L,		R,		EN,		AN,		N,		IL,		Cond */
-/* 0 LTR text	*/[0, 3, 0, 1, 0, 0, 0],
-/* 1 LTR+AN		*/[0, 3, 0, 1, 2, 2, 0],
-/* 2 LTR+AN+N	*/[0, 3, 0, 0x11, 2, 0, 1],
-/* 3 RTL text	*/[0, 3, 5, 5, 4, 1, 0],
-/* 4 RTL cont	*/[0, 3, 0x15, 0x15, 4, 0, 1],
+/* 0 LTR text		*/[0, 3, 0, 1, 0, 0, 0],
+/* 1 LTR+AN			*/[0, 3, 0, 1, 2, 2, 0],
+/* 2 LTR+AN+N		*/[0, 3, 0, 0x11, 2, 0, 1],
+/* 3 RTL text		*/[0, 3, 5, 5, 4, 1, 0],
+/* 4 RTL cont	  */[0, 3, 0x15, 0x15, 4, 0, 1],
 /* 5 RTL+EN/AN	*/[0, 3, 5, 5, 4, 2, 0]
 ];
 
 var impTab_RTL = [
 		/*		L,		R,		EN,		AN,		N,		IL,		Cond */
-/* 0 RTL text	*/[2, 0, 1, 1, 0, 1, 0],
+/* 0 RTL text		*/[2, 0, 1, 1, 0, 1, 0],
 /* 1 RTL+EN/AN	*/[2, 0, 1, 1, 0, 2, 0],
-/* 2 LTR text	*/[2, 0, 2, 1, 3, 2, 0],
-/* 3 LTR+cont	*/[2, 0, 2, 0x21, 3, 1, 1]
+/* 2 LTR text		*/[2, 0, 2, 1, 3, 2, 0],
+/* 3 LTR+cont		*/[2, 0, 2, 0x21, 3, 1, 1]
 ];
 
 var LTR = 0, RTL = 1;

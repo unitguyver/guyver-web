@@ -1,6 +1,5 @@
 import Range from "../../editor/tools/Range";
-import RangeList from "../utils/range_list";
-
+import RangeList from "../../editor/tools/RangeList";
 
 function isSamePoint(p1, p2) {
   return p1.row == p2.row && p1.column == p2.column;

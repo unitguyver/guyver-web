@@ -1,30 +1,16 @@
-import Editor from "../../editor";
 import EditSession from "../../editor/session";
-import * as editorUtils from "./editorUtils";
-import * as selectionUtils from "./selectionUtils";
+import * as SelectionUtils from "./SelectionUtils";
+import * as EditorUtils from "./EditorUtils";
 import config from "../../editor/config";
 import Selection from "../../editor/tools/Selection";
-import * as commands from "../commands/multi_select_commands";
+import * as _commands from "../commands/multi_select_commands";
 import event from "../event/event";
 
 const { onMouseDown } = require("../event/mouse/multi_select_handler");
 
-for (let editorUtilName in editorUtils) {
-  Editor.prototype[editorUtilName] = editorUtils[editorUtilName];
-}
+const commands = _commands.defaultCommands.concat(_commands.multiSelectCommands);
 
-for (let selectionUtilName in selectionUtils) {
-  Selection.prototype[selectionUtilName] = selectionUtils[selectionUtilName];
-}
-
-const _commands = commands.defaultCommands.concat(commands.multiSelectCommands);
-export { _commands as commands };
-
-EditSession.prototype.getSelectionMarkers = function () {
-  return this.$selectionMarkers;
-};
-
-export const onSessionChange = function (e) {
+const onSessionChange = function (e) {
   var session = e.session;
   if (session && !session.multiSelect) {
     session.$selectionMarkers = [];
@@ -60,7 +46,7 @@ export const onSessionChange = function (e) {
   }
 };
 
-export const MultiSelect = function (editor) {
+const MultiSelect = function (editor) {
   if (editor.$multiselectOnSessionChange)
     return;
   editor.$onAddRange = editor.$onAddRange.bind(editor);
@@ -79,7 +65,7 @@ export const MultiSelect = function (editor) {
   addAltCursorListeners(editor);
 }
 
-function addAltCursorListeners(editor) {
+const addAltCursorListeners = function (editor) {
   if (!editor.textInput) return;
   var el = editor.textInput.getElement();
   var altCursor = false;
@@ -107,24 +93,40 @@ function addAltCursorListeners(editor) {
   }
 }
 
-config.defineOptions(Editor.prototype, "editor", {
-  enableMultiselect: {
-    set: function (val) {
-      MultiSelect(this);
-      if (val) {
-        this.on("changeSession", this.$multiselectOnSessionChange);
-        this.on("mousedown", onMouseDown);
-      } else {
-        this.off("changeSession", this.$multiselectOnSessionChange);
-        this.off("mousedown", onMouseDown);
-      }
-    },
-    value: true
-  },
-  enableBlockSelect: {
-    set: function (val) {
-      this.$blockSelectEnabled = val;
-    },
-    value: true
+export default function multiSelect(Sub) {
+  for (let editorUtilName in EditorUtils) {
+    Sub.prototype[editorUtilName] = EditorUtils[editorUtilName];
   }
-});
+
+  for (let selectionUtilName in SelectionUtils) {
+    Selection.prototype[selectionUtilName] = SelectionUtils[selectionUtilName];
+  }
+
+  EditSession.prototype.getSelectionMarkers = function () {
+    return this.$selectionMarkers;
+  };
+  config.defineOptions(Sub.prototype, "editor", {
+    enableMultiselect: {
+      set: function (val) {
+        MultiSelect(this);
+        if (val) {
+          this.on("changeSession", this.$multiselectOnSessionChange);
+          this.on("mousedown", onMouseDown);
+        } else {
+          this.off("changeSession", this.$multiselectOnSessionChange);
+          this.off("mousedown", onMouseDown);
+        }
+      },
+      value: true
+    },
+    enableBlockSelect: {
+      set: function (val) {
+        this.$blockSelectEnabled = val;
+      },
+      value: true
+    }
+  });
+
+  return Sub;
+}
+

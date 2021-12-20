@@ -1,4 +1,4 @@
-const { HashHandler } = require("../event/keyboard/HashHandler");
+import HashHandler from "../event/keyboard/HashHandler";
 
 export const defaultCommands = [
     {

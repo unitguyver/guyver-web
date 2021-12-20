@@ -1,4 +1,4 @@
-import keys from "../utils/keys";
+import Keys from "../utils/Keys";
 import useragent from "../utils/useragent";
 
 const event = {};
@@ -194,7 +194,7 @@ var getModifierHash = function (e) {
 };
 
 event.getModifierString = function (e) {
-    return keys.KEY_MODS[getModifierHash(e)];
+    return Keys.KEY_MODS[getModifierHash(e)];
 };
 
 function normalizeCommandKeys(callback, e, keyCode) {
@@ -222,7 +222,7 @@ function normalizeCommandKeys(callback, e, keyCode) {
         }
     }
 
-    if (keyCode in keys.MODIFIER_KEYS) {
+    if (keyCode in Keys.MODIFIER_KEYS) {
         keyCode = -1;
     }
 
@@ -246,7 +246,7 @@ function normalizeCommandKeys(callback, e, keyCode) {
     // If there is no hashId and the keyCode is not a function key, then
     // we don't call the callback as we don't handle a command key here
     // (it's a normal key/character input).
-    if (!hashId && !(keyCode in keys.FUNCTION_KEYS) && !(keyCode in keys.PRINTABLE_KEYS)) {
+    if (!hashId && !(keyCode in Keys.FUNCTION_KEYS) && !(keyCode in Keys.PRINTABLE_KEYS)) {
         return false;
     }
 
@@ -264,15 +264,18 @@ event.addCommandKeyListener = function (el, callback, destroyer) {
         // stores keyCode is used to emulate a keyDown event.
         var lastKeyDownKeyCode = null;
         addListener(el, "keydown", function (e) {
+            console.log("keydown")
             lastKeyDownKeyCode = e.keyCode;
         }, destroyer);
         addListener(el, "keypress", function (e) {
+            console.log("keypress")
             return normalizeCommandKeys(callback, e, lastKeyDownKeyCode);
         }, destroyer);
     } else {
         var lastDefaultPrevented = null;
 
         addListener(el, "keydown", function (e) {
+            console.log("keydown")
             pressedKeys[e.keyCode] = (pressedKeys[e.keyCode] || 0) + 1;
             var result = normalizeCommandKeys(callback, e, e.keyCode);
             lastDefaultPrevented = e.defaultPrevented;
@@ -280,6 +283,7 @@ event.addCommandKeyListener = function (el, callback, destroyer) {
         }, destroyer);
 
         addListener(el, "keypress", function (e) {
+            console.log("keypress")
             if (lastDefaultPrevented && (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey)) {
                 event.stopEvent(e);
                 lastDefaultPrevented = null;

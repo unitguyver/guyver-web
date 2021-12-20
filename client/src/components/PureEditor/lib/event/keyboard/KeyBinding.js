@@ -1,5 +1,7 @@
-import keyUtil from "../../utils/keys";
+import Keys from "../../utils/Keys";
 import event from "../event";
+
+const keyUtil = new Keys();
 
 export default class KeyBinding {
     $handlers = [];
@@ -28,21 +30,24 @@ export default class KeyBinding {
     };
 
     addKeyboardHandler = function (kb, pos) {
-        if (!kb)
-            return;
-        if (typeof kb == "function" && !kb.handleKeyboard)
+        if (!kb) return;
+        if (typeof kb == "function" && !kb.handleKeyboard) {
             kb.handleKeyboard = kb;
-        var i = this.$handlers.indexOf(kb);
-        if (i != -1)
+        }
+        const i = this.$handlers.indexOf(kb);
+        if (i != -1) {
             this.$handlers.splice(i, 1);
+        }
 
-        if (pos == undefined)
+        if (pos == undefined) {
             this.$handlers.push(kb);
-        else
+        } else {
             this.$handlers.splice(pos, 0, kb);
+        }
 
-        if (i == -1 && kb.attach)
+        if (i == -1 && kb.attach) {
             kb.attach(this.$editor);
+        }
     };
 
     removeKeyboardHandler = function (kb) {
@@ -106,7 +111,8 @@ export default class KeyBinding {
     };
 
     onCommandKey = function (e, hashId, keyCode) {
-        var keyString = keyUtil.keyCodeToString(keyCode);
+        const keyString = keyUtil.keyCodeToString(keyCode);
+
         return this.$callKeyboardHandlers(hashId, keyString, keyCode, e);
     };
 

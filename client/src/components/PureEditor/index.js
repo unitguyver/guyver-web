@@ -5,6 +5,7 @@ import Renderer from "./lib/virtual_renderer";
 import dom from "./lib/utils/dom";
 import UndoManager from "./utils/undomanager";
 import event from "./lib/event/event";
+import VimHandler from "./lib/event/keyboard/vim";
 import "./worker";
 
 class PureEditor extends Editor {
@@ -55,6 +56,8 @@ class PureEditor extends Editor {
       env.editor.container.env = null;
     });
     this.container.env = this.env = env;
+
+    this.setKeyboardHandler(new VimHandler());
   };
 }
 

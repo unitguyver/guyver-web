@@ -12,7 +12,10 @@ import lang from "../lib/utils/lang";
 import { TextInput } from "../lib/event/keyboard/textinput";
 import KeyBinding from "../lib/event/keyboard/KeyBinding";
 import FoldHandler from "../lib/event/mouse/fold_handler";
+import * as extra from "../lib/multi_select/EditorUtils";
+import multiSelect from "../lib/multi_select";
 
+@multiSelect
 @EventEmitter
 class Editor {
   static $uid = 0;
@@ -245,5 +248,9 @@ var relativeNumberRenderer = {
     this.update(null, editor);
   }
 };
+
+for (let extraKey in extra) {
+  Editor.prototype[extraKey] = extra[extraKey];
+}
 
 export default Editor;
